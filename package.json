@@ -5,5 +5,19 @@
   "main": "src/uniswapGov.ts",
   "repository": "https://github.com/singulart/uniswap-gov-notifier.git",
   "author": "isonar",
-  "license": "MIT"
+  "license": "MIT",
+  "scripts": {
+    "build": "tsc",
+    "start": "node ./bin/uniswapGov.js",
+    "dev": "ts-node ./src/uniswapGov.ts"
+  },
+  "dependencies": {
+    "@types/node": "^16.11.12",
+    "axios": "^0.24.0",
+    "typescript": "^4.5.2",
+    "web3": "^1.6.1"
+  },
+  "devDependencies": {
+    "ts-node": "^10.4.0"
+  }
 }
