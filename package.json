@@ -1,0 +1,9 @@
+{
+  "name": "uniswap-gov-notifier",
+  "version": "1.0.0",
+  "description": "Bot notifying about Uniswap Governance events",
+  "main": "src/uniswapGov.ts",
+  "repository": "https://github.com/singulart/uniswap-gov-notifier.git",
+  "author": "isonar",
+  "license": "MIT"
+}
