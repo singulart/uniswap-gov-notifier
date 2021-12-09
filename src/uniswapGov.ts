@@ -1,4 +1,7 @@
+import './pre-start'; // Must be the first import
 import {createServer} from './utils/server'
+
+require('dotenv').config()
 
 createServer()
   .then(server => {
