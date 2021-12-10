@@ -4,7 +4,8 @@ export const bravoEvents = new Map<string, any>(
             "0x7d84a6263ae0d98d3329bd7b46bb4e8d6f98cd35a7adb45c274c8b7fd5ebd5e0", 
             {
                 "name": "ProposalCreated",
-                "inputs": [{
+                "inputs": [
+                    {
                         "indexed": false,
                         "internalType": "uint256",
                         "name": "id",
@@ -64,7 +65,8 @@ export const bravoEvents = new Map<string, any>(
             "0xb8e138887d0aa13bab447e82de9d5c1777041ecd21ca36ba824ff1e6c07ddda4", 
             {
                 "name": "VoteCast",
-                "inputs": [{
+                "inputs": [
+                    {
                         "indexed": true,
                         "internalType": "address",
                         "name": "voter",
@@ -100,7 +102,8 @@ export const bravoEvents = new Map<string, any>(
             "0x9a2e42fd6722813d69113e7d0079d3d940171428df7373df9c7f7617cfda2892", 
             {
                 "name": "ProposalQueued",
-                "inputs": [{
+                "inputs": [
+                    {
                         "indexed": false,
                         "internalType": "uint256",
                         "name": "id",
@@ -118,7 +121,8 @@ export const bravoEvents = new Map<string, any>(
             "0x712ae1383f79ac853f8d882153778e0260ef8f03b504e2866e0593e04d2b291f", 
             {
                 "name": "ProposalExecuted",
-                "inputs": [{
+                "inputs": [
+                    {
                     "indexed": false,
                     "internalType": "uint256",
                     "name": "id",
