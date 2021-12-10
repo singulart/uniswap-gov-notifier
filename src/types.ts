@@ -10,5 +10,6 @@ export interface IEventItem {
     topic1: string,
     topic2: string,
     topic3: string,
-    payload: {[key: string]: string}
+    payload: {[key: string]: string},
+    resolvedName: string
 }

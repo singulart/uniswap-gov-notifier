@@ -6,15 +6,8 @@ const token = process.env.TOKEN; // environment variable TOKEN must be set
 
 export const discordClient = async (): Promise<Client> => {
 
-    const client = new Discord.Client({intents: []});
-    
-    client.once("ready", async () => {
-      console.log('Discord.js client ready');
-      await client.channels.fetch(channelId);
-    });
-    
+    const client = new Discord.Client({intents: []});    
     await client.login(token); 
     console.log('Bot logged in successfully');
-    
     return client;
 }
