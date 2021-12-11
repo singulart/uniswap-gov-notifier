@@ -31,7 +31,7 @@ cron.schedule('0/15 * * * * *', function() {
           return 0;
         } else {
           if (event.resolvedName === "ProposalCreated") {
-            const exampleEmbed = new Discord.MessageEmbed()
+            const newProposalEmbed = new Discord.MessageEmbed()
             .setColor('#F3CFC6') 
             .setTitle(`New Governance proposal #${event.payload['id']} created`)
             .setURL(`https://sybil-interface.vercel.app/#/proposals/uniswap/${event.payload['id']}`)
@@ -45,13 +45,14 @@ cron.schedule('0/15 * * * * *', function() {
               { name: 'Start Block', value: event.payload['startBlock'], inline: true },
               { name: 'End Block', value: event.payload['endBlock'], inline: true }
             )
+            .setImage('https://i.imgur.com/hqWs2R9.jpg') //feel free to change ;) 
             .setTimestamp();  
-            channel.send({ embeds: [exampleEmbed] })
-            .then(message => console.log(`Sent message: ${message.content}`))
+            channel.send({ embeds: [newProposalEmbed] })
+            .then(message => console.log(`Sent message`))
             .catch(console.error);
 
           } else if (event.resolvedName === "VoteCast") {
-            const exampleEmbed = new Discord.MessageEmbed()
+            const voteCastEmbed = new Discord.MessageEmbed()
             .setColor('#F3CFC6')
             .setTitle(`New Vote on Proposal #${event.payload['proposalId']}`)
             .setURL(`https://sybil-interface.vercel.app/#/proposals/uniswap/${event.payload['proposalId']}`)
@@ -63,30 +64,46 @@ cron.schedule('0/15 * * * * *', function() {
               { name: 'Tx Hash', value: event.transaction_hash, inline: true },
               { name: 'Voter', value: event.payload['voter'], inline: true }
             )
+            .setImage('https://i.imgur.com/IXZDOTG.jpg')
             .setTimestamp();  
-            channel.send({ embeds: [exampleEmbed] })
+            channel.send({ embeds: [voteCastEmbed] })
             .then(message => console.log(`Sent message: ${message.content}`))
             .catch(console.error);
-          } else if (event.resolvedName === "VoteCast") {
-            // const exampleEmbed = new Discord.MessageEmbed()
-            // .setColor('#4038FF') // official joystream blue, see https://www.joystream.org/brand/guides/
-            // .setTitle(edge.node.title)
-            // .setURL(`https://play.joystream.org/video/${edge.node.id}`)
-            // .setDescription(edge.node.description.substring(0, 200)) // cut off lengthy descriptions
-            // .addFields(
-            //   { name: 'ID', value: edge.node.id, inline: true },
-            //   { name: 'Category', value: edge.node.category.name, inline: true},
-            //   { name: 'Duration', value: durationFormat(edge.node.duration), inline: true },
-            //   { name: 'Language', value: edge.node.language.iso, inline: true },
-            //   { name: 'Size', value: humanFileSize(edge.node.mediaDataObject.size), inline: true },
-            //   { name: 'License', value: licenses[licenseKey], inline: true },
-            // )
-            // .setTimestamp();  
-            // channel.send(exampleEmbed)
-            // .then(message => console.log(`Sent message: ${message.content}`))
-            // .catch(console.error);  
+
+          } else if (event.resolvedName === "ProposalQueued") {
+            const voteCastEmbed = new Discord.MessageEmbed()
+            .setColor('#F3CFC6')
+            .setTitle(`Proposal #${event.payload['id']} queued`)
+            .setURL(`https://sybil-interface.vercel.app/#/proposals/uniswap/${event.payload['id']}`)
+            .setDescription(`Vote is over. Proposal entered the grace period`)
+            .addFields(
+              { name: 'ID', value: event.payload['id'], inline: true },
+              { name: 'ETA', value: event.payload['eta'], inline: true},
+              { name: 'Block #', value: event.block_number, inline: true},
+              { name: 'Tx Hash', value: event.transaction_hash, inline: true }
+            )
+            .setTimestamp();  
+            channel.send({ embeds: [voteCastEmbed] })
+            .then(message => console.log(`Sent message: ${message.content}`))
+            .catch(console.error);
+
+          } else if (event.resolvedName === "ProposalExecuted") {
+            const voteCastEmbed = new Discord.MessageEmbed()
+            .setColor('#F3CFC6')
+            .setTitle(`Proposal #${event.payload['proposalId']} executed`)
+            .setURL(`https://sybil-interface.vercel.app/#/proposals/uniswap/${event.payload['id']}`)
+            .setDescription(`Proposal executed successfully`)
+            .addFields(
+              { name: 'ID', value: event.payload['id'], inline: true },
+              { name: 'Block #', value: event.block_number, inline: true},
+              { name: 'Tx Hash', value: event.transaction_hash, inline: true }
+            )
+            .setTimestamp();  
+            channel.send({ embeds: [voteCastEmbed] })
+            .then(message => console.log(`Sent message: ${message.content}`))
+            .catch(console.error);
           }
-        }
+      }
       })    
     })
   })
