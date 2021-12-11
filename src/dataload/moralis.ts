@@ -13,7 +13,8 @@ const web3 = new Web3(provider);
 // todo use date filters! 
 export const fetchGovernanceEvents = async (fromDate: string, toDate: string): Promise<IEventItem[]> => {
 
-    const moralisResponse: IMoralisResponse = (await axios.get(`https://deep-index.moralis.io/api/v2/${bravoAddress}/logs?chain=${chain}`, { 
+    const moralisResponse: IMoralisResponse = 
+    (await axios.get(`https://deep-index.moralis.io/api/v2/${bravoAddress}/logs?chain=${chain}&from_date=${fromDate}`, { 
         headers: {
             'X-API-Key': moralisApiKey
         }}

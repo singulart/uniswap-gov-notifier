@@ -15,13 +15,18 @@ const dateFormat = 'YYYY-DD-MMMTHH:mm:ssZ'
 /********************************************************************************************
  *                              Set up cron task to read the new proposals from Moralis API
  ********************************************************************************************/
-cron.schedule('0/15 * * * * *', function() {
+cron.schedule('0 */4 * * *', function() {
     
   const dateFrom = moment().utc().subtract(4, 'hours');
   const formattedDateFrom = dateFrom.format();
+  console.log(`Checking for new proposals created or uploaded since ${formattedDateFrom}`);
 
   fetchGovernanceEvents(formattedDateFrom, moment().utc().format(dateFormat))
   .then( async (governanceEvents: IEventItem[]) => {
+    if(governanceEvents.length == 0) {
+      console.log(`No governance updates since ${formattedDateFrom}`)
+      return 0
+    }
     const discord: Client = await discordClient()
     discord.on("ready", () => {
       governanceEvents.forEach( async (event: IEventItem) => {
@@ -78,7 +83,7 @@ cron.schedule('0/15 * * * * *', function() {
             .setDescription(`Vote is over. Proposal entered the grace period`)
             .addFields(
               { name: 'ID', value: event.payload['id'], inline: true },
-              { name: 'ETA', value: event.payload['eta'], inline: true},
+              { name: 'ETA', value: moment(new Date(+event.payload['eta'] * 1000)).toLocaleString(), inline: true},
               { name: 'Block #', value: event.block_number, inline: true},
               { name: 'Tx Hash', value: event.transaction_hash, inline: true }
             )
@@ -90,20 +95,21 @@ cron.schedule('0/15 * * * * *', function() {
           } else if (event.resolvedName === "ProposalExecuted") {
             const voteCastEmbed = new Discord.MessageEmbed()
             .setColor('#F3CFC6')
-            .setTitle(`Proposal #${event.payload['proposalId']} executed`)
+            .setTitle(`Proposal #${event.payload['id']} executed`)
             .setURL(`https://sybil-interface.vercel.app/#/proposals/uniswap/${event.payload['id']}`)
             .setDescription(`Proposal executed successfully`)
             .addFields(
               { name: 'ID', value: event.payload['id'], inline: true },
               { name: 'Block #', value: event.block_number, inline: true},
-              { name: 'Tx Hash', value: event.transaction_hash, inline: true }
+              { name: 'Tx Hash', value: event.transaction_hash, inline: true },
+              { name: 'Executed at', value: event.block_timestamp, inline: true },
             )
             .setTimestamp();  
             channel.send({ embeds: [voteCastEmbed] })
             .then(message => console.log(`Sent message: ${message.content}`))
             .catch(console.error);
           }
-      }
+        }
       })    
     })
   })
